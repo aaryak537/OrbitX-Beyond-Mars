@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BeyondMars</string>
+    <string name="space_background">space background</string>
+    <string name="game_logo">game logo</string>
+    <string name="team_logo">team logo</string>
+    <string name="mars_background">mars background</string>
+    <string name="rocket">Rocket</string>
+    <string name="preparing_mission">Preparing Mission...</string>
+    <string name="mission_tip">🚀 Mission Tip</string>
 </resources>
