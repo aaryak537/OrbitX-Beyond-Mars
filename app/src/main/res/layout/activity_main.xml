@@ -1,19 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_mars"
     tools:context=".MainActivity">
 
-    <TextView
+    <!-- Dark Overlay -->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"/>
+
+    <!-- Coins -->
+
+    <LinearLayout
+        android:id="@+id/coinLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="@string/energy_coins"
+            android:src="@drawable/ic_energy"/>
+
+        <TextView
+            android:id="@+id/txtCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="12,540"
+            android:textColor="#FFD54F"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+    <!-- Game Logo -->
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="260dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/game_logo"
+        android:src="@drawable/beyond_mars_logo"/>
+
+
+    <!-- Menu Buttons -->
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <!-- Play -->
+
+        <Button
+            android:id="@+id/btnPlay"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/button_mars"
+            android:text="@string/play"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+        <!-- Continue -->
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/button_mars"
+            android:text="@string/continues"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <!-- How To Play -->
+
+        <Button
+            android:id="@+id/btnHow"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/button_mars"
+            android:text="@string/how_to_play"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+    <!-- Version -->
+
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:text="@string/version_1_0_0"
+        android:textColor="#DDFFFFFF"
+        android:textSize="14sp"/>
+    <!-- Settings Icon -->
+
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:src="@drawable/ic_settings"
+        android:contentDescription="@string/settings"
+        app:tint="#FFD54F"/>
+    <ImageButton
+        android:id="@+id/btnExit"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        app:tint="#FF6B1A"
+        android:contentDescription="@string/exit"
+        android:src="@drawable/ic_exit"/>
+</RelativeLayout>
