@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        hideSystemUI();
         // Initialize Views
         switchMusic = findViewById(R.id.switchMusic);
         switchSound = findViewById(R.id.switchSound);
@@ -42,22 +44,22 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences preferences =
                 getSharedPreferences("BeyondMarsSettings", MODE_PRIVATE);
 
-        boolean musicEnabled = preferences.getBoolean("music", true);
+       // boolean musicEnabled = preferences.getBoolean("music", true);
 
-        if (musicEnabled) {
+      //  if (musicEnabled) {
             // Play background music
-            MusicManager.start(this);
-        }
-        boolean soundEnabled = preferences.getBoolean("sound", true);
+          //  MusicManager.start(this);
+      //  }
+      //  boolean soundEnabled = preferences.getBoolean("sound", true);
 
-        if (soundEnabled) {
+      //  if (soundEnabled) {
             // Play button click sound
-        }
-        boolean vibrationEnabled = preferences.getBoolean("vibration", true);
+      //  }
+       // boolean vibrationEnabled = preferences.getBoolean("vibration", true);
 
-        if (vibrationEnabled) {
+       // if (vibrationEnabled) {
             // Vibrate device
-        }
+      //  }
 
         // Save Music
         switchMusic.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -128,5 +130,21 @@ public class SettingsActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+    private void hideSystemUI(){
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            getWindow().setDecorFitsSystemWindows(false);
+            WindowInsetsController controller =
+                    getWindow().getInsetsController();
+
+            if(controller != null){
+                controller.hide(WindowInsets.Type.statusBars()
+                        | WindowInsets.Type.navigationBars());
+
+                controller.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+            }
+        }
     }
 }

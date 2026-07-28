@@ -9,7 +9,7 @@ public class MusicManager {
 
     public static void start(Context context) {
         if (player == null) {
-            player = MediaPlayer.create(context, R.raw.background_music);
+           // player = MediaPlayer.create(context, R.raw.background_music);
             player.setLooping(true);
             player.start();
         }

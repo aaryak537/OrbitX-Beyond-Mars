@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         loadCoins();
         // PLAY
         btnPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this,
-                    GameActivity.class);
+           Intent intent = new Intent(MainActivity.this,
+                   GameActivity.class);
             startActivity(intent);
         });
         // CONTINUE
@@ -48,26 +48,24 @@ public class MainActivity extends AppCompatActivity {
             boolean savedGame = preferences.getBoolean("SAVE_GAME", false);
 
             if(savedGame){
-                Intent intent = new Intent(MainActivity.this,
-                        GameActivity.class);
-
+               Intent intent = new Intent(MainActivity.this,
+                       GameActivity.class);
                 intent.putExtra("CONTINUE", true);
-                startActivity(intent);
+               startActivity(intent);
             }else{
                 showMessage("No saved game found.");
             }
         });
         // HOW TO PLAY
-        btnHow.setOnClickListener(v -> {
+       // btnHow.setOnClickListener(v -> {
 
-            Intent intent = new Intent(MainActivity.this,
-                    HowToPlayActivity.class);
+          //  Intent intent = new Intent(MainActivity.this,
+            //        HowToPlayActivity.class);
 
-            startActivity(intent);
-        });
+         //   startActivity(intent);
+       // });
         // SETTINGS
         btnSettings.setOnClickListener(v -> {
-
             Intent intent = new Intent(MainActivity.this,
                     SettingsActivity.class);
             startActivity(intent);
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         int coins = preferences.getInt("COINS", 0);
 
         txtCoins.setText(String.valueOf(coins));
-
     }
     private void showMessage(String message){
 
@@ -92,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
     private void showExitDialog(){
 
         new AlertDialog.Builder(this)
-                .setTitle("Exit Game")
-                .setMessage("Are you sure you want to exit Beyond Mars?")
+                .setTitle("Leaving Mars?")
+                .setMessage("Mission Control is waiting. Are you sure you want to leave your colony?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
                     finishAffinity();

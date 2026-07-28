@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/txtFloatingReward"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="+2"
+    android:textSize="28sp"
+    android:textStyle="bold"
+    android:textColor="#FFD54F"
+    android:fontFamily="sans-serif-black"
+    android:shadowColor="#FFFF8F"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="12"
+    android:alpha="1"
+    android:elevation="8dp"
+    android:padding="2dp" />
