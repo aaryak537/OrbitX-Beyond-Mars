@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
     Switch switchMusic, switchSound, switchVibration;
     TextView resetProgress, privacyPolicy, credits;
     SharedPreferences preferences;
+    ImageButton back;
     public static final String PREF_NAME = "BeyondMarsSettings";
 
     @Override
@@ -32,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         resetProgress = findViewById(R.id.resetProgress);
         privacyPolicy = findViewById(R.id.privacyPolicy);
         credits = findViewById(R.id.credits);
-
+        back=findViewById(R.id.btnBack);
         // Shared Preferences
         preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
@@ -40,6 +43,14 @@ public class SettingsActivity extends AppCompatActivity {
         switchMusic.setChecked(preferences.getBoolean("music", true));
         switchSound.setChecked(preferences.getBoolean("sound", true));
         switchVibration.setChecked(preferences.getBoolean("vibration", true));
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         SharedPreferences preferences =
                 getSharedPreferences("BeyondMarsSettings", MODE_PRIVATE);
@@ -112,11 +123,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     // Reset Game Progress
     private void showResetDialog() {
-
         new AlertDialog.Builder(this)
-                .setTitle("Reset Progress")
-                .setMessage("Are you sure you want to reset all game progress?")
-                .setPositiveButton("RESET", (dialog, which) -> {
+                .setTitle("Colony Wipe")
+                .setMessage("Warning! All buildings, resources, upgrades, and achievements will be permanently lost.")
+                .setPositiveButton("Erase Colony", (dialog, which) -> {
 
                     SharedPreferences.Editor editor = preferences.edit();
 

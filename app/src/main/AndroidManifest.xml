@@ -32,6 +32,10 @@
             android:screenOrientation="landscape"
             android:exported="false" />
         <activity
+            android:name=".PlanetsActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
             android:screenOrientation="landscape"
             android:exported="false" />

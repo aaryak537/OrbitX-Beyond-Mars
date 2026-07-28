@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // PLAY
         btnPlay.setOnClickListener(v -> {
            Intent intent = new Intent(MainActivity.this,
-                   GameActivity.class);
+                   PlanetsActivity.class);
             startActivity(intent);
         });
         // CONTINUE

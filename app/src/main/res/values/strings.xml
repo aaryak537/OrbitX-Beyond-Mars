@@ -22,4 +22,10 @@
     <string name="credits">🚀 Credits</string>
     <string name="beyond_mars_v1_0">Beyond Mars v1.0</string>
     <string name="setting">⚙ SETTINGS</string>
+    <string name="select_planet">SELECT PLANET</string>
+    <string name="swipe_to_explore">Swipe to Explore →</string>
+    <string name="back">Back</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="mars">Mars</string>
+    <string name="locked">locked</string>
 </resources>
