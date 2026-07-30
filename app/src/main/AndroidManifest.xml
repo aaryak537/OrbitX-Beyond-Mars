@@ -51,6 +51,10 @@
             android:name=".BuildActivity"
             android:screenOrientation="landscape"
             android:exported="false" />
+        <activity
+            android:name=".WorkersActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
 
     </application>
 </manifest>

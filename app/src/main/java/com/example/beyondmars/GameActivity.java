@@ -2,13 +2,12 @@ package com.example.beyondmars;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Gravity;
-import android.view.View;
-import android.view.animation.AccelerateInterpolator;
+
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,304 +17,825 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
-    private ImageView astronaut,marsSurface;
-    private TextView tvCoins,tvEnergy,tvLevel;
-   // private TextView tvWorkers,tvIncome;
-    private ProgressBar energyBar;
-  //  private ImageButton btnMission,btnStats;
-    private ImageButton btnShop,btnBuild,btnRocket,btnSettings;
-    private long coins = 0;
+    private ImageView imgBackground,imgAstronaut;
+    private ImageView imgSun,imgMoon,imgStars;
+    private FrameLayout floatingResourceContainer,particleContainer;
+    private TextView txtCoins,txtMinerals,txtEnergy,txtLevel,txtWorkers,txtMission;
+    private TextView txtMissionProgress,txtFloatingReward,txtFloatingXP;
+    private ProgressBar progressMission;
+    private ProgressBar buildProgress;
+    private ImageButton btnShop,btnBuild,btnWorkers,btnRocket,btnSettings;
 
-    private int level = 1,workers = 0,energy = 10,tapReward = 5,autoIncome = 0;
+    private long coins = 0,minerals = 0;
+    private int energy = 0,maxEnergy = 100,xp = 0,level = 1,workers = 0;
 
-    private final int maxEnergy = 100;
+    private int hqLevel = 1,solarLevel = 0,mineLevel = 0,greenhouseLevel = 0,oxygenPlantLevel = 0;
 
-    private final Handler handler = new Handler(Looper.getMainLooper());
+    private static final int TAP_ENERGY_GAIN = 1,TAP_MINERAL_GAIN = 5,TAP_XP_GAIN = 1;
+    private static final int ENERGY_REGEN = 1,ENERGY_REGEN_DELAY = 1000,WORKER_INTERVAL = 2000;
+    private static final int AUTO_SAVE_INTERVAL = 10000;
 
-    private boolean running = true;
+    private int combo = 0;
+    private long lastTapTime = 0;
+    private static final long COMBO_RESET_TIME = 1800;
 
+    private final Random random = new Random();
+    private static final int CRITICAL_CHANCE = 10,CRITICAL_MULTIPLIER = 3;
+
+    private int missionGoal = 100,missionProgress = 0;
+
+    private boolean running = false;
     private static final int FRAME_DELAY = 16;
-    private final Handler incomeHandler = new Handler(Looper.getMainLooper());
 
-    private final Handler energyHandler = new Handler(Looper.getMainLooper());
+    private final Handler gameHandler =
+            new Handler(Looper.getMainLooper());
+    private final Handler energyHandler =
+            new Handler(Looper.getMainLooper());
+    private final Handler workerHandler =
+            new Handler(Looper.getMainLooper());
+    private final Handler autoSaveHandler =
+            new Handler(Looper.getMainLooper());
 
-    //====================================================
+    private SharedPreferences preferences;
+
+    private boolean dayMode = true,soundEnabled = true,vibrationEnabled = true,musicEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game);
 
-        astronaut = findViewById(R.id.imgAstronaut);
+        preferences = getSharedPreferences(
+                "BeyondMarsSave",
+                MODE_PRIVATE);
 
-        marsSurface = findViewById(R.id.imgBackground);
+        imgBackground = findViewById(R.id.imgBackground);
+        imgAstronaut = findViewById(R.id.imgAstronaut);
 
-        tvCoins = findViewById(R.id.txtCoins);
+        imgSun = findViewById(R.id.imgSun);
+        imgMoon = findViewById(R.id.imgMoon);
+        imgStars = findViewById(R.id.imgStars);
 
-        tvEnergy = findViewById(R.id.txtEnergy);
+        floatingResourceContainer =
+                findViewById(R.id.floatingResourceContainer);
+        particleContainer =
+                findViewById(R.id.particleContainer);
 
-        tvLevel = findViewById(R.id.txtLevel);
+        txtCoins = findViewById(R.id.txtCoins);
+        txtMinerals = findViewById(R.id.txtMinerals);
+        txtEnergy = findViewById(R.id.txtEnergy);
+        txtLevel = findViewById(R.id.txtLevel);
+        txtWorkers = findViewById(R.id.txtWorkers);
 
-       // tvWorkers = findViewById(R.id.txtWorkers);
+        txtMission = findViewById(R.id.txtMission);
+        txtMissionProgress = findViewById(R.id.txtMissionProgress);
+        progressMission = findViewById(R.id.progressMission);
 
-      //  tvIncome = findViewById(R.id.txtIncome);
+       // buildProgress = findViewById(R.id.buildProgress);
 
-       // energyBar = findViewById(R.id.energyBar);
+        txtFloatingReward = findViewById(R.id.txtFloatingReward);
+        txtFloatingXP = findViewById(R.id.txtFloatingXP);
 
         btnShop = findViewById(R.id.btnShop);
-
         btnBuild = findViewById(R.id.btnBuild);
-
-       // btnMission = findViewById(R.id.btnMission);
-
+        btnWorkers = findViewById(R.id.btnWorkers);
         btnRocket = findViewById(R.id.btnRocket);
+        btnSettings = findViewById(R.id.btnSettings);
 
-     //   btnStats = findViewById(R.id.btnStats);
-        btnSettings=findViewById(R.id.btnSettings);
         loadGame();
 
         updateHUD();
 
-        setupListeners();
+        updateMission();
 
-        startGameLoop();
+        txtFloatingReward.setVisibility(TextView.GONE);
+        txtFloatingXP.setVisibility(TextView.GONE);
+        progressMission.setMax(missionGoal);
+        progressMission.setProgress(missionProgress);
 
-        startAutoIncome();
-
-        startEnergyRegen();
+        setupClickListeners();
     }
+    private void setupClickListeners() {
 
-    private void setupListeners() {
+        imgBackground.setOnClickListener(v -> {
+            if (!running)
+                return;
+            tapMars();
+        });
 
-        marsSurface.setOnClickListener(v -> tapMars());
+        imgAstronaut.setOnClickListener(v -> {
 
-        astronaut.setOnClickListener(v -> tapMars());
+            if (!running)
+                return;
+            tapMars();
+        });
 
         btnShop.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, ShopActivity.class);
+
+            Intent intent = new Intent(GameActivity.this,
+                            ShopActivity.class);
             startActivity(intent);
         });
 
         btnBuild.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, BuildActivity.class);
+
+            Intent intent = new Intent(GameActivity.this,
+                            BuildActivity.class);
             startActivity(intent);
         });
 
-       // btnMission.setOnClickListener(v -> {//TODO});
+        btnWorkers.setOnClickListener(v -> {
+            Intent intent =
+                    new Intent(GameActivity.this,
+                            WorkersActivity.class);
+            startActivity(intent);
+        });
 
         btnRocket.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, PlanetsActivity.class);
+            Intent intent = new Intent(GameActivity.this,
+                            PlanetsActivity.class);
             startActivity(intent);
         });
 
-       // btnStats.setOnClickListener(v -> {//TODO});
         btnSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, SettingsActivity.class);
+
+            Intent intent = new Intent(GameActivity.this,
+                            SettingsActivity.class);
             startActivity(intent);
         });
     }
 
-    //====================================================
-
-    private void tapMars() {
-
-        if (energy <= 0)
-            return;
-
-        energy--;
-
-        coins += tapReward;
-
-        animateTap();
-
-        showFloatingReward();
+    private void initializeGame() {
 
         updateHUD();
+        updateMission();
 
+        txtFloatingReward.setVisibility(TextView.GONE);
+        txtFloatingXP.setVisibility(TextView.GONE);
+    }
+    private void tapMars() {
+
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastTapTime <= COMBO_RESET_TIME) {
+            combo++;
+        } else {
+            combo = 1;
+        }
+        lastTapTime = currentTime;
+
+        int energyGain = TAP_ENERGY_GAIN;
+        int mineralGain = TAP_MINERAL_GAIN;
+        int xpGain = TAP_XP_GAIN;
+
+        boolean critical = false;
+
+        if (random.nextInt(100) < CRITICAL_CHANCE) {
+
+            critical = true;
+
+            energyGain *= CRITICAL_MULTIPLIER;
+            mineralGain *= CRITICAL_MULTIPLIER;
+            xpGain *= CRITICAL_MULTIPLIER;
+        }
+
+        if (combo >= 10) {
+            energyGain += 1;
+            mineralGain += 3;
+        }
+
+        if (combo >= 25) {
+            energyGain += 2;
+            mineralGain += 6;
+        }
+
+        if (combo >= 50) {
+            energyGain += 5;
+            mineralGain += 15;
+        }
+        energy += energyGain;
+
+        if (energy > maxEnergy)
+            energy = maxEnergy;
+
+        minerals += mineralGain;
+
+        xp += xpGain;
+
+        missionProgress += mineralGain;
+
+        checkLevelUp();
+        animateMars();
+        animateAstronaut();
+
+        showFloatingReward("+" + energyGain + " Energy");
+        showFloatingXP("+" + xpGain + " XP");
+
+        if (critical) {
+            showFloatingReward("CRITICAL x3");
+        }
+
+        updateMission();
+        updateHUD();
     }
 
-    //====================================================
+    private void animateMars() {
 
-    private void animateTap() {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(
+                        imgBackground,
+                        "scaleX",
+                        1f,
+                        0.96f,
+                        1f);
 
-        ObjectAnimator animator =
-                ObjectAnimator.ofFloat(marsSurface,
-                        "scaleX", 1f,
-                        0.95f, 1f);
-        animator.setDuration(120);
-        animator.start();
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(
+                        imgBackground,
+                        "scaleY",
+                        1f,
+                        0.96f,
+                        1f);
+
+        scaleX.setDuration(120);
+        scaleY.setDuration(120);
+
+        scaleX.start();
+        scaleY.start();
     }
 
-    //====================================================
-    private void showFloatingReward() {
+    private void animateAstronaut() {
 
-        TextView reward = new TextView(this);
-        reward.setText("+1");
-        reward.setTextSize(22);
-        reward.setTextColor(getColor(R.color.coinYellow));
-        reward.setTypeface(null, Typeface.BOLD);
-
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        params.gravity = Gravity.CENTER;
-
-        FrameLayout root = findViewById(android.R.id.content);
-        root.addView(reward, params);
-
-        reward.animate()
-                .translationY(-250f)
-                .alpha(0f)
-                .setDuration(1000)
-                .withEndAction(() -> root.removeView(reward))
+        imgAstronaut.animate()
+                .translationY(-20f)
+                .setDuration(80)
+                .withEndAction(() ->
+                        imgAstronaut.animate()
+                                .translationY(0)
+                                .setDuration(80))
                 .start();
     }
 
-    //====================================================
+    private void showFloatingReward(String text) {
 
-    private void updateHUD() {
-
-        tvCoins.setText(String.format(Locale.getDefault(),
-                "%,d", coins));
-
-        tvEnergy.setText(energy + "/" + maxEnergy);
-
-        tvLevel.setText("Lv " + level);
-
-      //  tvWorkers.setText(String.valueOf(workers));
-
-       // tvIncome.setText(autoIncome + "/sec");
-
-        energyBar.setMax(maxEnergy);
-
-        energyBar.setProgress(energy);
+        txtFloatingReward.setText(text);
+        txtFloatingReward.setAlpha(1f);
+        txtFloatingReward.setTranslationY(0);
+        txtFloatingReward.setVisibility(TextView.VISIBLE);
+        txtFloatingReward.animate()
+                .translationY(-150)
+                .alpha(0f)
+                .setDuration(900)
+                .withEndAction(() ->
+                        txtFloatingReward.setVisibility(TextView.GONE))
+                .start();
     }
 
-    //====================================================
+    private void showFloatingXP(String text) {
 
-    private void startGameLoop() {
-
-        handler.post(new Runnable() {
-
-            @Override
-            public void run() {
-
-                if (!running)
-                    return;
-                update();
-                handler.postDelayed(this, FRAME_DELAY);
-            }
-        });
+        txtFloatingXP.setText(text);
+        txtFloatingXP.setAlpha(1f);
+        txtFloatingXP.setTranslationY(0);
+        txtFloatingXP.setVisibility(TextView.VISIBLE);
+        txtFloatingXP.animate()
+                .translationY(-110)
+                .alpha(0f)
+                .setDuration(800)
+                .withEndAction(() ->
+                        txtFloatingXP.setVisibility(TextView.GONE))
+                .start();
     }
 
-    //====================================================
-
-    private void update() {
-
-        //Future
-
-        //Day/Night
-
-        //Animations
-
-        //Particles
-
-        //Mission updates
-
-    }
-
-    //====================================================
-
-    private void startAutoIncome() {
-
-        incomeHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                if (!running)
-                    return;
-
-                coins += autoIncome;
-
-                updateHUD();
-
-                incomeHandler.postDelayed(this, 1000);
-            }
-        }, 1000);
-    }
-
-    //====================================================
-
-    private void startEnergyRegen() {
+    private void startEnergySystem() {
 
         energyHandler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
-
                 if (!running)
                     return;
 
-                if (energy < maxEnergy)
-                    energy++;
+                if (energy < maxEnergy) {
 
-                updateHUD();
+                    energy += ENERGY_REGEN;
 
-                energyHandler.postDelayed(this, 500);
+                    if (energy > maxEnergy)
+                        energy = maxEnergy;
+
+                    updateHUD();
+                }
+                energyHandler.postDelayed(this, ENERGY_REGEN_DELAY);
             }
-        }, 500);
+        }, ENERGY_REGEN_DELAY);
+    }
+    private void startWorkerSystem() {
+
+        workerHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if (!running)
+                    return;
+
+                if (workers <= 0) {
+                    workerHandler.postDelayed(
+                            this,
+                            WORKER_INTERVAL);
+                    return;
+                }
+
+                int usableWorkers =
+                        Math.min(workers, energy);
+
+                if (usableWorkers > 0) {
+
+                    energy -= usableWorkers;
+
+                    int mineralsProduced =
+                            usableWorkers * (5 + mineLevel);
+
+                    minerals += mineralsProduced;
+                    missionProgress += mineralsProduced;
+
+                    showFloatingReward("+" + mineralsProduced + " Minerals");
+
+                    convertMineralsToCoins();
+
+                    checkLevelUp();
+                    updateMission();
+                    updateHUD();
+                }
+                workerHandler.postDelayed(this, WORKER_INTERVAL);
+            }
+        }, WORKER_INTERVAL);
     }
 
+    private void convertMineralsToCoins() {
+
+        if (minerals < 10)
+            return;
+
+        long earnedCoins = minerals / 10;
+        coins += earnedCoins;
+        minerals %= 10;
+    }
+
+    private void startAutoSaveSystem() {
+
+        autoSaveHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if (!running)
+                    return;
+                saveGame();
+
+                autoSaveHandler.postDelayed(this, AUTO_SAVE_INTERVAL);
+            }
+        }, AUTO_SAVE_INTERVAL);
+    }
+
+    private void checkLevelUp() {
+        int requiredXP = level * 100;
+
+        while (xp >= requiredXP) {
+
+            xp -= requiredXP;
+            level++;
+
+            maxEnergy += 10;
+            energy = maxEnergy;
+
+            if (level % 5 == 0) {
+                hqLevel++;
+            }
+
+            if (level == 2 && workers == 0) {
+                workers = 1;
+                showFloatingReward("Worker Unlocked!");
+            }
+
+            //------------------------------------
+            // EVERY 3 LEVELS
+            //------------------------------------
+
+            if (level > 2 && level % 3 == 0) {
+
+                workers++;
+
+                showFloatingReward("+1 Worker");
+
+            }
+
+            //------------------------------------
+            // NEXT REQUIREMENT
+            //------------------------------------
+
+            requiredXP = level * 100;
+
+            showFloatingReward("LEVEL " + level);
+
+        }
+
+    }
+
+    //====================================================
+    // MISSION SYSTEM
+    //====================================================
+
+    private void updateMission() {
+
+        //----------------------------------------
+        // PROGRESS BAR
+        //----------------------------------------
+
+        progressMission.setMax(missionGoal);
+
+        progressMission.setProgress(
+                Math.min(missionProgress, missionGoal));
+
+        txtMissionProgress.setText(
+                missionProgress + " / " + missionGoal);
+
+        //----------------------------------------
+        // COMPLETE
+        //----------------------------------------
+
+        if (missionProgress >= missionGoal) {
+
+            completeMission();
+
+        }
+
+    }
+
+    //====================================================
+    // COMPLETE MISSION
+    //====================================================
+
+    private void completeMission() {
+
+        //----------------------------------------
+        // REWARDS
+        //----------------------------------------
+
+        coins += 100;
+
+        xp += 50;
+
+        showFloatingReward("+100 Coins");
+
+        showFloatingXP("+50 XP");
+
+        //----------------------------------------
+        // NEXT MISSION
+        //----------------------------------------
+
+        missionProgress = 0;
+
+        missionGoal += 100;
+
+        txtMission.setText(
+                "Collect " + missionGoal + " Minerals");
+
+        //----------------------------------------
+        // UPDATE
+        //----------------------------------------
+
+        checkLevelUp();
+
+        updateHUD();
+
+    }
+
+    //====================================================
+    // BUILDING UPGRADES
+    //====================================================
+
+    private void upgradeHQ() {
+
+        int cost = hqLevel * 500;
+
+        if (coins < cost)
+            return;
+
+        coins -= cost;
+
+        hqLevel++;
+
+        maxEnergy += 20;
+
+        energy = maxEnergy;
+
+        updateHUD();
+
+    }
+
+    //====================================================
+
+    private void upgradeSolarPanel() {
+
+        int cost = (solarLevel + 1) * 300;
+
+        if (coins < cost)
+            return;
+
+        coins -= cost;
+
+        solarLevel++;
+
+        updateHUD();
+
+    }
+
+    //====================================================
+
+    private void upgradeMine() {
+
+        int cost = (mineLevel + 1) * 400;
+
+        if (coins < cost)
+            return;
+
+        coins -= cost;
+
+        mineLevel++;
+
+        updateHUD();
+
+    }
+
+    //====================================================
+
+    private void upgradeGreenhouse() {
+
+        int cost = (greenhouseLevel + 1) * 600;
+
+        if (coins < cost)
+            return;
+
+        coins -= cost;
+
+        greenhouseLevel++;
+
+        workers++;
+
+        showFloatingReward("+1 Colonist");
+
+        updateHUD();
+
+    }
+
+    //====================================================
+
+    private void upgradeOxygenPlant() {
+
+        int cost = (oxygenPlantLevel + 1) * 800;
+
+        if (coins < cost)
+            return;
+
+        coins -= cost;
+
+        oxygenPlantLevel++;
+
+        maxEnergy += 25;
+
+        energy = maxEnergy;
+
+        updateHUD();
+
+    }
+    //====================================================
+    // UPDATE HUD
+    //====================================================
+
+    private void updateHUD() {
+
+        txtCoins.setText(
+                String.format(Locale.getDefault(),
+                        "%,d", coins));
+
+        txtMinerals.setText(
+                String.format(Locale.getDefault(),
+                        "%,d", minerals));
+
+        txtEnergy.setText(
+                energy + " / " + maxEnergy);
+
+        txtLevel.setText(
+                "Lv. " + level);
+
+        txtWorkers.setText(
+                "Workers : " + workers);
+
+    }
+
+    //====================================================
+    // SAVE GAME
+    //====================================================
+
+    private void saveGame() {
+
+        SharedPreferences.Editor editor =
+                preferences.edit();
+
+        editor.putLong("coins", coins);
+        editor.putLong("minerals", minerals);
+
+        editor.putInt("energy", energy);
+        editor.putInt("maxEnergy", maxEnergy);
+
+        editor.putInt("xp", xp);
+        editor.putInt("level", level);
+
+        editor.putInt("workers", workers);
+
+        editor.putInt("hqLevel", hqLevel);
+        editor.putInt("solarLevel", solarLevel);
+        editor.putInt("mineLevel", mineLevel);
+        editor.putInt("greenhouseLevel", greenhouseLevel);
+        editor.putInt("oxygenPlantLevel", oxygenPlantLevel);
+
+        editor.putInt("missionGoal", missionGoal);
+        editor.putInt("missionProgress",
+                missionProgress);
+
+        editor.apply();
+
+    }
+
+    //====================================================
+    // LOAD GAME
     //====================================================
 
     private void loadGame() {
 
-        //Later from SaveManager
+        coins =
+                preferences.getLong("coins", 0);
 
-    }
+        minerals =
+                preferences.getLong("minerals", 0);
 
-    private void saveGame() {
+        energy =
+                preferences.getInt("energy", 0);
 
-        //Later SharedPreferences
+        maxEnergy =
+                preferences.getInt("maxEnergy", 100);
+
+        xp =
+                preferences.getInt("xp", 0);
+
+        level =
+                preferences.getInt("level", 1);
+
+        workers =
+                preferences.getInt("workers", 0);
+
+        hqLevel =
+                preferences.getInt("hqLevel", 1);
+
+        solarLevel =
+                preferences.getInt("solarLevel", 0);
+
+        mineLevel =
+                preferences.getInt("mineLevel", 0);
+
+        greenhouseLevel =
+                preferences.getInt("greenhouseLevel", 0);
+
+        oxygenPlantLevel =
+                preferences.getInt("oxygenPlantLevel", 0);
+
+        missionGoal =
+                preferences.getInt("missionGoal", 100);
+
+        missionProgress =
+                preferences.getInt("missionProgress", 0);
 
     }
 
     //====================================================
+    // GAME LOOP
+    //====================================================
+
+    private void startGameLoop() {
+
+        gameHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                if (!running)
+                    return;
+
+                update();
+
+                gameHandler.postDelayed(
+                        this,
+                        FRAME_DELAY);
+
+            }
+
+        }, FRAME_DELAY);
+
+    }
+
+    //====================================================
+    // UPDATE
+    //====================================================
+
+    private void update() {
+
+        //----------------------------------------
+        // Future Systems
+        //----------------------------------------
+
+        // Particle System
+
+        // Day / Night
+
+        // Weather
+
+        // Rockets
+
+        // Achievements
+
+        // Sound
+
+    }
+
+    //====================================================
+    // ON RESUME
+    //====================================================
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        running = false;
-        saveGame();
-    }
-    @Override
     protected void onResume() {
+
         super.onResume();
 
         running = true;
 
+        initializeGame();
+
         startGameLoop();
 
-        startAutoIncome();
+        startEnergySystem();
 
-        startEnergyRegen();
+        startWorkerSystem();
+
+        startAutoSaveSystem();
+
     }
+
+    //====================================================
+    // ON PAUSE
+    //====================================================
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+
+        running = false;
+
+        saveGame();
+
+        gameHandler.removeCallbacksAndMessages(null);
+
+        energyHandler.removeCallbacksAndMessages(null);
+
+        workerHandler.removeCallbacksAndMessages(null);
+
+        autoSaveHandler.removeCallbacksAndMessages(null);
+
+    }
+
+    //====================================================
+    // ON DESTROY
+    //====================================================
+
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
 
         running = false;
 
-        handler.removeCallbacksAndMessages(null);
+        saveGame();
 
-        incomeHandler.removeCallbacksAndMessages(null);
+        gameHandler.removeCallbacksAndMessages(null);
 
         energyHandler.removeCallbacksAndMessages(null);
+
+        workerHandler.removeCallbacksAndMessages(null);
+
+        autoSaveHandler.removeCallbacksAndMessages(null);
+
     }
+
 }

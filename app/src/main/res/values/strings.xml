@@ -28,4 +28,20 @@
     <string name="unlocked">Unlocked</string>
     <string name="mars">Mars</string>
     <string name="locked">locked</string>
+    <string name="minerals_gems">minerals gems</string>
+    <string name="levels">levels</string>
+    <string name="build">Build</string>
+    <string name="constructing">Constructing...</string>
+    <string name="game_paused">GAME PAUSED</string>
+    <string name="mission">MISSION</string>
+    <string name="shop">Shop</string>
+    <string name="workers">Workers</string>
+    <string name="astronaut">astronaut</string>
+    <string name="stars">stars</string>
+    <string name="sun">sun</string>
+    <string name="moon">moon</string>
+    <string name="base">base</string>
+    <string name="building_solar_panel">building solar panel</string>
+    <string name="building_mine">building mine</string>
+    <string name="building_greenhouse">building greenhouse</string>
 </resources>
