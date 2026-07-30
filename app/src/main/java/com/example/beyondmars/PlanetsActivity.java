@@ -1,10 +1,8 @@
 package com.example.beyondmars;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,27 +26,20 @@ public class PlanetsActivity extends AppCompatActivity {
         hideSystemUI();
 
         recyclerPlanets = findViewById(R.id.recyclerPlanets);
-
-
         setupRecyclerView();
-
         loadPlanets();
-
     }
     private void setupRecyclerView() {
 
         LinearLayoutManager manager =
                 new LinearLayoutManager(
-                        this,
-                        LinearLayoutManager.HORIZONTAL,
+                        this, LinearLayoutManager.HORIZONTAL,
                         false);
 
         recyclerPlanets.setLayoutManager(manager);
 
         new LinearSnapHelper().attachToRecyclerView(recyclerPlanets);
-
     }
-
     private void loadPlanets() {
 
         planetList = new ArrayList<>();

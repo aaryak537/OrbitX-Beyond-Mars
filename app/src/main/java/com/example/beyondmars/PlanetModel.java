@@ -2,8 +2,7 @@ package com.example.beyondmars;
 
 public class PlanetModel {
 
-    private final String name;
-    private final String status;
+    private final String name,status;
     private final int imageResId;
     private final boolean locked;
 

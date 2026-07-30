@@ -36,7 +36,19 @@
             android:screenOrientation="landscape"
             android:exported="false" />
         <activity
+            android:name=".RocketLandingActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
+            android:name=".ShopActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
+            android:name=".BuildActivity"
             android:screenOrientation="landscape"
             android:exported="false" />
 

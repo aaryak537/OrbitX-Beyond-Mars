@@ -60,7 +60,7 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetView
             holder.imgPlanet.setAlpha(1f);
             holder.btnPlay.setOnClickListener(v -> {
 
-                Intent intent = new Intent(context, GameActivity.class);
+                Intent intent = new Intent(context, RocketLandingActivity.class);
                 intent.putExtra("planet_name", planet.getName());
                 context.startActivity(intent);
             });

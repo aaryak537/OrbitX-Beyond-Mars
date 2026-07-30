@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Dark futuristic glass panel -->
+    <solid android:color="#B31A1A1A"/>
+
+    <!-- Rounded corners -->
+    <corners android:radius="18dp"/>
+
+    <!-- Orange border -->
+    <stroke
+        android:width="2dp"
+        android:color="#FF8C42"/>
+
+    <!-- Inner padding -->
+    <padding
+        android:left="12dp"
+        android:top="12dp"
+        android:right="12dp"
+        android:bottom="12dp"/>
+
+</shape>
