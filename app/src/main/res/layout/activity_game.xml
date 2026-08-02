@@ -32,57 +32,14 @@
         android:contentDescription="@string/stars"
         android:src="@drawable/stars_overlay"/>
 
-    <!-- ========================= -->
-    <!-- SUN -->
-    <!-- ========================= -->
-
-    <ImageView
-        android:id="@+id/imgSun"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:contentDescription="@string/sun"
-        android:src="@drawable/ic_sun"/>
-
-    <!-- ========================= -->
-    <!-- MOON -->
-    <!-- ========================= -->
-
-    <ImageView
-        android:id="@+id/imgMoon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:alpha="0"
-        android:contentDescription="@string/moon"
-        android:src="@drawable/ic_moon"/>
-
-    <!-- ========================= -->
-    <!-- DAY NIGHT OVERLAY -->
-    <!-- ========================= -->
-
-    <View
-        android:id="@+id/dayNightOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:background="#001B3A"/>
-
-    <!-- ========================= -->
-    <!-- TOP HUD -->
-    <!-- ========================= -->
 
     <LinearLayout
         android:id="@+id/topHUD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:weightSum="4">
 
         <!-- Coins -->
@@ -96,19 +53,19 @@
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:tint="#FFFFFF"
                 android:contentDescription="@string/energy_coins"
-                android:src="@drawable/ic_coin"/>
+                android:src="@drawable/ic_coin"
+                app:tint="#FFFFFF" />
 
             <TextView
                 android:id="@+id/txtCoins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="6dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -123,19 +80,19 @@
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:tint="#9BE564"
                 android:contentDescription="@string/minerals_gems"
-                android:src="@drawable/ic_gem"/>
+                android:src="@drawable/ic_gem"
+                app:tint="#9BE564" />
 
             <TextView
                 android:id="@+id/txtMinerals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:text="0"
                 android:textColor="#9BE564"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="6dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
         <!-- Energy -->
@@ -149,19 +106,19 @@
             <ImageView
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:tint="#00FF99"
                 android:contentDescription="@string/energy_coins"
-                android:src="@drawable/ic_energy"/>
+                android:src="@drawable/ic_energy"
+                app:tint="#00FF99" />
 
             <TextView
                 android:id="@+id/txtEnergy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:text="0"
                 android:textColor="#00FF99"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="6dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -177,21 +134,31 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:contentDescription="@string/levels"
-                android:src="@drawable/ic_level"/>
+                android:src="@drawable/ic_level" />
 
             <TextView
                 android:id="@+id/txtLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:text="Lv.1"
                 android:textColor="#FFD54F"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="6dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgMountains"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:contentDescription="@string/mars_background"
+        android:scaleType="fitXY"
+        android:src="@drawable/mars_mountains" />
 
     <!-- ========================= -->
     <!-- MISSION PANEL -->
@@ -244,16 +211,6 @@
             android:layout_marginTop="4dp"/>
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imgMountains"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/mars_background"
-        android:src="@drawable/mars_mountains" />
 
     <ImageView
         android:id="@+id/imgGround"

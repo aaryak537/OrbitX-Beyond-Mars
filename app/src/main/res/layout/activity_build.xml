@@ -55,6 +55,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    app:tint="#FFC107"
                     android:src="@drawable/ic_solar"/>
 
                 <LinearLayout
@@ -83,6 +84,9 @@
                     android:id="@+id/btnBuildSolar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/button_mars"
+                    android:backgroundTint="@null"
+                    app:backgroundTint="@null"
                     android:text="500"/>
             </LinearLayout>
 
@@ -98,6 +102,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    app:tint="#4CAF50"
                     android:src="@drawable/ic_oxygen"/>
 
                 <LinearLayout
@@ -126,7 +131,10 @@
                     android:id="@+id/btnBuildOxygen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1000"/>
+                    android:background="@drawable/button_mars"
+                    android:backgroundTint="@null"
+                    app:backgroundTint="@null"
+                    android:text="1K"/>
             </LinearLayout>
 
             <!-- Habitat -->
@@ -169,7 +177,10 @@
                     android:id="@+id/btnBuildHabitat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2000"/>
+                    android:background="@drawable/button_mars"
+                    android:backgroundTint="@null"
+                    app:backgroundTint="@null"
+                    android:text="2K"/>
             </LinearLayout>
 
             <!-- Research Lab -->
@@ -184,6 +195,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    app:tint="#7C4DFF"
                     android:src="@drawable/ic_lab"/>
 
                 <LinearLayout
@@ -212,7 +224,10 @@
                     android:id="@+id/btnBuildLab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5000"/>
+                    android:background="@drawable/button_mars"
+                    android:backgroundTint="@null"
+                    app:backgroundTint="@null"
+                    android:text="5K"/>
             </LinearLayout>
 
         </LinearLayout>

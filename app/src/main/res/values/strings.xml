@@ -44,4 +44,5 @@
     <string name="building_solar_panel">building solar panel</string>
     <string name="building_mine">building mine</string>
     <string name="building_greenhouse">building greenhouse</string>
+    <string name="smoke">smoke</string>
 </resources>

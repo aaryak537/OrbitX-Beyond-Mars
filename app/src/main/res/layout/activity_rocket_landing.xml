@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/space_background"
         android:src="@drawable/bg_space"/>
 
     <!-- Mars Surface -->
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/mars"
         android:src="@drawable/mars"/>
 
     <!-- Dust -->
@@ -31,7 +33,8 @@
         android:layout_height="180dp"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="100dp"
-        android:src="@drawable/smoke"
+        android:contentDescription="@string/smoke"
+        android:src="@drawable/dust"
         android:alpha="0"/>
 
     <!-- Rocket -->
@@ -42,7 +45,8 @@
         android:layout_height="220dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="-250dp"
-        android:src="@drawable/rocket_launching"/>
+        android:contentDescription="@string/rocket"
+        android:src="@drawable/rocket"/>
 
     <!-- Astronaut -->
 
@@ -52,6 +56,7 @@
         android:layout_height="110dp"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="180dp"
+        android:contentDescription="@string/astronaut"
         android:src="@drawable/astronaut"
         android:alpha="0"/>
 
