@@ -3,61 +3,88 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
-    <!-- Background -->
-
+    <!-- Space Background -->
     <ImageView
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/space_background"
-        android:src="@drawable/bg_space"/>
+        android:src="@drawable/bg_space"
+        android:contentDescription="@string/space_background"/>
+
+    <!-- Stars Overlay -->
+    <ImageView
+        android:id="@+id/stars"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:scaleType="centerCrop"
+        android:src="@drawable/stars_overlay"
+        android:contentDescription="Stars"/>
+
+    <!-- Landing Glow -->
+    <ImageView
+        android:id="@+id/glow"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="150dp"
+        android:alpha="0"
+        android:src="@drawable/glow_circle"
+        android:contentDescription="Glow"/>
+
+    <!-- Rocket -->
+    <ImageView
+        android:id="@+id/rocket"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_horizontal"
+        android:translationY="-900dp"
+        android:src="@drawable/rocket"
+        android:contentDescription="@string/rocket"/>
+
+    <!-- Dust Cloud -->
+    <ImageView
+        android:id="@+id/dust"
+        android:layout_width="340dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="120dp"
+        android:alpha="0"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dust"
+        android:contentDescription="@string/smoke"/>
+
+    <!-- Astronaut -->
+    <ImageView
+        android:id="@+id/astronaut"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="150dp"
+        android:alpha="0"
+        android:src="@drawable/astronaut"
+        android:contentDescription="@string/astronaut"/>
 
     <!-- Mars Surface -->
-
     <ImageView
         android:id="@+id/marsSurface"
         android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_gravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/mars_ground"
+        android:contentDescription="@string/mars"/>
+
+    <!-- Black Fade Overlay -->
+    <View
+        android:id="@+id/fadeOverlay"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/mars"
-        android:src="@drawable/mars"/>
-
-    <!-- Dust -->
-
-    <ImageView
-        android:id="@+id/dust"
-        android:layout_width="300dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="100dp"
-        android:contentDescription="@string/smoke"
-        android:src="@drawable/dust"
-        android:alpha="0"/>
-
-    <!-- Rocket -->
-
-    <ImageView
-        android:id="@+id/rocket"
-        android:layout_width="130dp"
-        android:layout_height="220dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-250dp"
-        android:contentDescription="@string/rocket"
-        android:src="@drawable/rocket"/>
-
-    <!-- Astronaut -->
-
-    <ImageView
-        android:id="@+id/astronaut"
-        android:layout_width="70dp"
-        android:layout_height="110dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="180dp"
-        android:contentDescription="@string/astronaut"
-        android:src="@drawable/astronaut"
+        android:background="#000000"
         android:alpha="0"/>
 
 </FrameLayout>

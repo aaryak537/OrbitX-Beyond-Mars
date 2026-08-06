@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="#1B263B">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Mission Title -->
+
+        <TextView
+            android:id="@+id/txtMissionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Collect 500 Minerals"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"/>
+
+        <!-- Mission Description -->
+
+        <TextView
+            android:id="@+id/txtMissionDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Collect minerals by tapping on Mars."
+            android:textColor="#D6D6D6"
+            android:textSize="15sp"/>
+
+        <!-- Progress -->
+
+        <ProgressBar
+            android:id="@+id/progressMission"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="14dp"
+            android:max="100"
+            android:progress="35"/>
+
+        <TextView
+            android:id="@+id/txtProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="35 / 100"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"/>
+
+        <!-- Rewards -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtCoinReward"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🪙 300"
+                android:textColor="#FFD54F"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtGemReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💎 20"
+                android:textColor="#64B5F6"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Status -->
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="In Progress"
+            android:textColor="#FFA726"
+            android:textStyle="bold"/>
+
+        <!-- Claim Button -->
+
+        <Button
+            android:id="@+id/btnClaim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Claim Reward"
+            android:textAllCaps="false"
+            android:backgroundTint="#FF9800"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

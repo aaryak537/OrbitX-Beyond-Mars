@@ -5,15 +5,18 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.widget.ImageView;
+import android.view.View;
+
 public class RocketLandingActivity extends AppCompatActivity {
 
-    ImageView rocket,astronaut,dust;
+    private ImageView rocket, dust, astronaut, glow;
+    private View fadeOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,109 +24,147 @@ public class RocketLandingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rocket_landing);
 
         rocket = findViewById(R.id.rocket);
-        astronaut = findViewById(R.id.astronaut);
         dust = findViewById(R.id.dust);
+        astronaut = findViewById(R.id.astronaut);
+        glow = findViewById(R.id.glow);
+        fadeOverlay = findViewById(R.id.fadeOverlay);
 
-        rocket.post(this::startCutscene);
+        startLandingAnimation();
     }
 
-    private void startCutscene() {
+    private void startLandingAnimation() {
 
-        // STEP 1
-        // Rocket falls
+        // Fade in from black
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(
+                fadeOverlay,
+                "alpha",
+                1f,
+                0f
+        );
+        fadeIn.setDuration(1200);
+        fadeIn.start();
 
-        ObjectAnimator rocketDown =
-                ObjectAnimator.ofFloat(rocket,
-                        "translationY", -900f, 350f);
+        // Rocket landing
+        ObjectAnimator rocketLanding = ObjectAnimator.ofFloat(
+                rocket,
+                "translationY",
+                -900f,
+                700f
+        );
+        rocketLanding.setDuration(3500);
+        rocketLanding.setInterpolator(new BounceInterpolator());
 
-        rocketDown.setDuration(3000);
-        rocketDown.setInterpolator(new DecelerateInterpolator());
-        rocketDown.start();
+        rocketLanding.start();
 
-        // STEP 2
+        rocketLanding.addListener(new android.animation.AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+
+                showLandingEffects();
+
+            }
+        });
+
+    }
+
+    private void showLandingEffects() {
+
+        // Glow
+        ObjectAnimator glowFade = ObjectAnimator.ofFloat(
+                glow,
+                "alpha",
+                0f,
+                1f
+        );
+        glowFade.setDuration(500);
+
         // Dust
+        dust.setScaleX(0.5f);
+        dust.setScaleY(0.5f);
 
-        new Handler().postDelayed(() -> {
+        ObjectAnimator dustAlpha =
+                ObjectAnimator.ofFloat(dust, "alpha", 0f, 1f);
 
-            dust.setVisibility(View.VISIBLE);
+        ObjectAnimator dustScaleX =
+                ObjectAnimator.ofFloat(dust, "scaleX", 0.5f, 1.3f);
 
-            ObjectAnimator fade =
-                    ObjectAnimator.ofFloat(dust,"alpha",0f,1f);
-            fade.setDuration(800);
+        ObjectAnimator dustScaleY =
+                ObjectAnimator.ofFloat(dust, "scaleY", 0.5f, 1.3f);
 
-            ObjectAnimator scaleX =
-                    ObjectAnimator.ofFloat(dust,"scaleX",0.5f,1.6f);
+        AnimatorSet dustSet = new AnimatorSet();
+        dustSet.playTogether(dustAlpha, dustScaleX, dustScaleY);
+        dustSet.setDuration(800);
 
-            ObjectAnimator scaleY =
-                    ObjectAnimator.ofFloat(dust,"scaleY",0.5f,1.6f);
+        glowFade.start();
+        dustSet.start();
 
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(fade,scaleX,scaleY);
-            set.start();
-        },3000);
-
-        // STEP 3
-        // Door opens (fake)
-
-        new Handler().postDelayed(() -> {
-            rocket.setRotation(3);
-        },3800);
-
-        // STEP 4
-        // Astronaut
-
-        new Handler().postDelayed(() -> {
-
-            astronaut.setAlpha(1f);
-            ObjectAnimator walk =
-                    ObjectAnimator.ofFloat(
-                            astronaut,
-                            "translationX",
-                            0f,
-                            180f);
-            walk.setDuration(2200);
-            walk.start();
-        },4600);
-
-        // STEP 5
-        // Camera Zoom
-
-        new Handler().postDelayed(() -> {
-
-            View root = findViewById(R.id.root);
-
-            ObjectAnimator zoomX =
-                    ObjectAnimator.ofFloat(root,
-                            "scaleX",
-                            1f,
-                            2.2f);
-
-            ObjectAnimator zoomY =
-                    ObjectAnimator.ofFloat(root,
-                            "scaleY",
-                            1f,
-                            2.2f);
-
-            AnimatorSet zoom = new AnimatorSet();
-            zoom.playTogether(zoomX,zoomY);
-            zoom.setDuration(1700);
-            zoom.start();
-
-        },6500);
-
-        // STEP 6
-        // Open Game
-
-        new Handler().postDelayed(() -> {
-
-            startActivity(new Intent(
-                    RocketLandingActivity.this,
-                    GameActivity.class));
-
-            overridePendingTransition(android.R.anim.fade_in,
-                    android.R.anim.fade_out);
-
-            finish();
-        },8000);
+        shakeRocket();
     }
+
+    private void shakeRocket() {
+
+        ObjectAnimator shake = ObjectAnimator.ofFloat(
+                rocket,
+                "translationX",
+                0f,
+                -12f,
+                12f,
+                -8f,
+                8f,
+                0f
+        );
+
+        shake.setDuration(700);
+        shake.start();
+
+        shake.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+
+                astronautExit();
+
+            }
+        });
+
+    }
+
+    private void astronautExit() {
+
+        astronaut.setAlpha(0f);
+
+        ObjectAnimator fadeAstronaut =
+                ObjectAnimator.ofFloat(astronaut,
+                        "alpha",
+                        0f,
+                        1f);
+
+        ObjectAnimator walk =
+                ObjectAnimator.ofFloat(astronaut,
+                        "translationX",
+                        0f,
+                        120f);
+
+        fadeAstronaut.setDuration(700);
+        walk.setDuration(1800);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(fadeAstronaut, walk);
+        set.start();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                startActivity(new Intent(
+                        RocketLandingActivity.this,
+                        GameActivity.class));
+
+                finish();
+
+            }
+        }, 2500);
+
+    }
+
 }

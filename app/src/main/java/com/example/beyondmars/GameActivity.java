@@ -10,16 +10,18 @@ import android.os.Looper;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
 
+    LinearLayout missionPanel;
     private ImageView imgBackground,imgAstronaut;
     private ImageView imgStars;
     private FrameLayout floatingResourceContainer,particleContainer;
@@ -49,38 +51,10 @@ public class GameActivity extends AppCompatActivity {
 
     private final Random random = new Random();
     private static final int CRITICAL_CHANCE = 10,CRITICAL_MULTIPLIER = 3;
+    private ArrayList<Mission> dailyMissions;
+    private ArrayList<Mission> storyMissions;
 
-    private int currentMission = 0;
-
-    private int missionGoal = 100;
-    private int missionProgress = 0;
-
-    private int completedMissions = 0;
-
-    private final Random missionRandom = new Random();
-
-    private static final int MISSION_COLLECT_MINERALS = 0;
-    private static final int MISSION_EARN_COINS = 1;
-    private static final int MISSION_GAIN_ENERGY = 2;
-    private static final int MISSION_REACH_LEVEL = 3;
-    private static final int MISSION_HIRE_WORKERS = 4;
-    private static final int MISSION_UPGRADE_HQ = 5;
-    private static final int MISSION_UPGRADE_SOLAR = 6;
-    private static final int MISSION_UPGRADE_MINE = 7;
-    private static final int MISSION_UPGRADE_GREENHOUSE = 8;
-    private static final int MISSION_UPGRADE_OXYGEN = 9;
-    private static final int MISSION_TAP_MARS = 10;
-    private static final int MISSION_CRITICAL_TAPS = 11;
-    private static final int MISSION_SPEND_COINS = 12;
-    private static final int MISSION_COLLECT_XP = 13;
-    private static final int MISSION_BUILD_BASE = 14;
-    private static final int MISSION_COLLECT_500_MINERALS = 15;
-    private static final int MISSION_COLLECT_1000_MINERALS = 16;
-    private static final int MISSION_EARN_5000_COINS = 17;
-    private static final int MISSION_REACH_LEVEL10 = 18;
-    private static final int MISSION_PLAY_GAME = 19;
-    private static final int MISSION_COMPLETE_5 = 20;
-
+    private Mission currentMission;
     private boolean running = false;
     private static final int FRAME_DELAY = 16;
 
@@ -127,7 +101,7 @@ public class GameActivity extends AppCompatActivity {
         txtMission = findViewById(R.id.txtMission);
         txtMissionProgress = findViewById(R.id.txtMissionProgress);
         progressMission = findViewById(R.id.progressMission);
-
+        missionPanel=findViewById(R.id.missionPanel);
        // buildProgress = findViewById(R.id.buildProgress);
 
         txtFloatingReward = findViewById(R.id.txtFloatingReward);
@@ -141,12 +115,30 @@ public class GameActivity extends AppCompatActivity {
 
         loadGame();
         updateHUD();
-        generateRandomMission();
+        MissionManager.initializeMissions();
+
+        dailyMissions = MissionManager.getDailyMissions();
+        storyMissions = MissionManager.getStoryMissions();
+
+        if (!dailyMissions.isEmpty()) {
+            currentMission = dailyMissions.get(0);
+        }
 
         txtFloatingReward.setVisibility(TextView.GONE);
         txtFloatingXP.setVisibility(TextView.GONE);
-        progressMission.setMax(missionGoal);
-        progressMission.setProgress(missionProgress);
+        if (currentMission != null) {
+
+            txtMission.setText(currentMission.getTitle());
+
+            progressMission.setMax(currentMission.getGoal());
+
+            progressMission.setProgress(currentMission.getProgress());
+
+            txtMissionProgress.setText(
+                    currentMission.getProgress()
+                            + " / "
+                            + currentMission.getGoal());
+        }
 
         setupClickListeners();
     }
@@ -163,6 +155,12 @@ public class GameActivity extends AppCompatActivity {
             if (!running)
                 return;
             tapMars();
+        });
+        missionPanel.setOnClickListener(v -> {
+
+            Intent intent = new Intent(GameActivity.this,
+                    MissionActivity.class);
+            startActivity(intent);
         });
 
         btnShop.setOnClickListener(v -> {
@@ -203,128 +201,23 @@ public class GameActivity extends AppCompatActivity {
     private void initializeGame() {
 
         updateHUD();
-        updateMission();
+
+        if (currentMission != null) {
+
+            txtMission.setText(currentMission.getTitle());
+
+            progressMission.setMax(currentMission.getGoal());
+
+            progressMission.setProgress(currentMission.getProgress());
+
+            txtMissionProgress.setText(
+                    currentMission.getProgress()
+                            + " / "
+                            + currentMission.getGoal());
+        }
 
         txtFloatingReward.setVisibility(TextView.GONE);
         txtFloatingXP.setVisibility(TextView.GONE);
-    }
-    private void generateRandomMission() {
-
-        currentMission = missionRandom.nextInt(21);
-
-        missionProgress = 0;
-
-        switch (currentMission) {
-
-            case MISSION_COLLECT_MINERALS:
-                missionGoal = 100;
-                txtMission.setText("Collect 100 Minerals");
-                break;
-
-            case MISSION_EARN_COINS:
-                missionGoal = 500;
-                txtMission.setText("Earn 500 Coins");
-                break;
-
-            case MISSION_GAIN_ENERGY:
-                missionGoal = 200;
-                txtMission.setText("Generate 200 Energy");
-                break;
-
-            case MISSION_REACH_LEVEL:
-                missionGoal = level + 1;
-                txtMission.setText("Reach Level " + missionGoal);
-                break;
-
-            case MISSION_HIRE_WORKERS:
-                missionGoal = workers + 2;
-                txtMission.setText("Hire 2 Workers");
-                break;
-
-            case MISSION_UPGRADE_HQ:
-                missionGoal = hqLevel + 1;
-                txtMission.setText("Upgrade HQ");
-                break;
-
-            case MISSION_UPGRADE_SOLAR:
-                missionGoal = solarLevel + 1;
-                txtMission.setText("Upgrade Solar Panel");
-                break;
-
-            case MISSION_UPGRADE_MINE:
-                missionGoal = mineLevel + 1;
-                txtMission.setText("Upgrade Mine");
-                break;
-
-            case MISSION_UPGRADE_GREENHOUSE:
-                missionGoal = greenhouseLevel + 1;
-                txtMission.setText("Upgrade Greenhouse");
-                break;
-
-            case MISSION_UPGRADE_OXYGEN:
-                missionGoal = oxygenPlantLevel + 1;
-                txtMission.setText("Upgrade Oxygen Plant");
-                break;
-
-            case MISSION_TAP_MARS:
-                missionGoal = 100;
-                txtMission.setText("Tap Mars 100 Times");
-                break;
-
-            case MISSION_CRITICAL_TAPS:
-                missionGoal = 10;
-                txtMission.setText("Get 10 Critical Taps");
-                break;
-
-            case MISSION_SPEND_COINS:
-                missionGoal = 1000;
-                txtMission.setText("Spend 1000 Coins");
-                break;
-
-            case MISSION_COLLECT_XP:
-                missionGoal = 500;
-                txtMission.setText("Collect 500 XP");
-                break;
-
-            case MISSION_BUILD_BASE:
-                missionGoal = 1;
-                txtMission.setText("Build Mars Base");
-                break;
-
-            case MISSION_COLLECT_500_MINERALS:
-                missionGoal = 500;
-                txtMission.setText("Collect 500 Minerals");
-                break;
-
-            case MISSION_COLLECT_1000_MINERALS:
-                missionGoal = 1000;
-                txtMission.setText("Collect 1000 Minerals");
-                break;
-
-            case MISSION_EARN_5000_COINS:
-                missionGoal = 5000;
-                txtMission.setText("Earn 5000 Coins");
-                break;
-
-            case MISSION_REACH_LEVEL10:
-                missionGoal = 10;
-                txtMission.setText("Reach Level 10");
-                break;
-
-            case MISSION_PLAY_GAME:
-                missionGoal = 300;
-                txtMission.setText("Play for 5 Minutes");
-                break;
-
-            case MISSION_COMPLETE_5:
-                missionGoal = 5;
-                txtMission.setText("Complete 5 Missions");
-                break;
-        }
-
-        progressMission.setMax(missionGoal);
-        progressMission.setProgress(0);
-        txtMissionProgress.setText("0 / " + missionGoal);
     }
     private void tapMars() {
 
@@ -369,10 +262,9 @@ public class GameActivity extends AppCompatActivity {
         energy += energyGain;
         totalEnergyProduced += energyGain;
         minerals += mineralGain;
-
+        MissionManager.addProgress(1, mineralGain);
         xp += xpGain;
-
-        missionProgress += mineralGain;
+        MissionManager.addProgress(3,1);
 
         checkLevelUp();
         animateAstronaut();
@@ -382,14 +274,38 @@ public class GameActivity extends AppCompatActivity {
 
         if (critical) {
             criticalTapCount++;
+            MissionManager.addProgress(2,1);
             showFloatingReward("CRITICAL x3");
         }
-
-        updateMission();
+        refreshMissionUI();
         updateHUD();
-        updateMission();
     }
+    private void refreshMissionUI() {
 
+        if(currentMission==null)
+            return;
+
+        txtMission.setText(currentMission.getTitle());
+
+        progressMission.setMax(currentMission.getGoal());
+
+        progressMission.setProgress(currentMission.getProgress());
+
+        txtMissionProgress.setText(
+
+                currentMission.getProgress()
+
+                        + " / "
+
+                        + currentMission.getGoal());
+
+        if(currentMission.isCompleted()){
+
+            showFloatingReward("Mission Complete!");
+
+        }
+
+    }
     private void animateAstronaut() {
 
         imgAstronaut.animate()
@@ -474,12 +390,10 @@ public class GameActivity extends AppCompatActivity {
                             usableWorkers * (3 + mineLevel);
 
                     minerals += mineralsProduced;
-                    missionProgress += mineralsProduced;
 
                     showFloatingReward("+" + mineralsProduced + " Minerals");
 
                     checkLevelUp();
-                    updateMission();
                     updateHUD();
                 }
                 workerHandler.postDelayed(this, WORKER_INTERVAL);
@@ -509,7 +423,7 @@ public class GameActivity extends AppCompatActivity {
 
             xp -= requiredXP;
             level++;
-
+            MissionManager.addProgress(102, level);
             maxEnergy += 10;
             energy = maxEnergy;
 
@@ -541,115 +455,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void updateMission() {
-
-        switch (currentMission) {
-
-            case MISSION_COLLECT_MINERALS:
-                missionProgress = (int) minerals;
-                break;
-
-            case MISSION_EARN_COINS:
-                missionProgress = (int) coins;
-                break;
-
-            case MISSION_GAIN_ENERGY:
-                missionProgress = (int) totalEnergyProduced;
-                break;
-
-            case MISSION_REACH_LEVEL:
-                missionProgress = level;
-                break;
-
-            case MISSION_HIRE_WORKERS:
-                missionProgress = workers;
-                break;
-
-            case MISSION_UPGRADE_HQ:
-                missionProgress = hqLevel;
-                break;
-
-            case MISSION_UPGRADE_SOLAR:
-                missionProgress = solarLevel;
-                break;
-
-            case MISSION_UPGRADE_MINE:
-                missionProgress = mineLevel;
-                break;
-
-            case MISSION_UPGRADE_GREENHOUSE:
-                missionProgress = greenhouseLevel;
-                break;
-
-            case MISSION_UPGRADE_OXYGEN:
-                missionProgress = oxygenPlantLevel;
-                break;
-
-            case MISSION_TAP_MARS:
-                missionProgress = tapCount;
-                break;
-
-            case MISSION_CRITICAL_TAPS:
-                missionProgress = criticalTapCount;
-                break;
-
-            case MISSION_SPEND_COINS:
-                missionProgress = (int) coinsSpent;
-                break;
-
-            case MISSION_COLLECT_XP:
-                missionProgress = xp;
-                break;
-
-            case MISSION_REACH_LEVEL10:
-                missionProgress = level;
-                break;
-
-            case MISSION_PLAY_GAME:
-                missionProgress = (int) totalPlaySeconds;
-                break;
-
-            case MISSION_COMPLETE_5:
-                missionProgress = completedMissions;
-                break;
-        }
-
-        progressMission.setMax(missionGoal);
-        progressMission.setProgress(Math.min(missionProgress, missionGoal));
-
-        txtMissionProgress.setText(
-                missionProgress + " / " + missionGoal
-                        + "   (" + completedMissions + " Done)");
-
-        if (missionProgress >= missionGoal) {
-            completeMission();
-        }
-    }
-
-    private void completeMission() {
-
-        completedMissions++;
-
-        int coinReward = 300 + (completedMissions * 100);
-        int xpReward = 50 + (completedMissions * 20);
-
-        coins += coinReward;
-        xp += xpReward;
-
-        showFloatingReward("+" + coinReward + " Coins");
-        showFloatingXP("+" + xpReward + " XP");
-
-        checkLevelUp();
-
-        generateRandomMission();
-
-        updateHUD();
-    }
-
-    //====================================================
-    // BUILDING UPGRADES
-    //====================================================
-
     private void upgradeHQ() {
         int cost = hqLevel * 500;
 
@@ -659,8 +464,10 @@ public class GameActivity extends AppCompatActivity {
         coins -= cost;
         coinsSpent += cost;
         hqLevel++;
+        MissionManager.addProgress(102,1);
         maxEnergy += 20;
         energy = maxEnergy;
+        refreshMissionUI();
         updateHUD();
     }
 
@@ -676,6 +483,8 @@ public class GameActivity extends AppCompatActivity {
         coins -= cost;
         coinsSpent += cost;
         solarLevel++;
+        MissionManager.addProgress(101,1);
+        refreshMissionUI();
         updateHUD();
     }
 
@@ -690,6 +499,9 @@ public class GameActivity extends AppCompatActivity {
         coins -= cost;
         coinsSpent += cost;
         mineLevel++;
+        MissionManager.addProgress(101,1);
+
+        refreshMissionUI();
         updateHUD();
     }
 
@@ -704,6 +516,9 @@ public class GameActivity extends AppCompatActivity {
         coins -= cost;
         coinsSpent += cost;
         greenhouseLevel++;
+        MissionManager.addProgress(101,1);
+
+        refreshMissionUI();
         workers++;
 
         showFloatingReward("+1 Colonist");
@@ -723,6 +538,9 @@ public class GameActivity extends AppCompatActivity {
         coins -= cost;
         coinsSpent += cost;
         oxygenPlantLevel++;
+        MissionManager.addProgress(101,1);
+
+        refreshMissionUI();
         maxEnergy += 25;
         energy = maxEnergy;
 
@@ -772,9 +590,6 @@ public class GameActivity extends AppCompatActivity {
         editor.putInt("greenhouseLevel", greenhouseLevel);
         editor.putInt("oxygenPlantLevel", oxygenPlantLevel);
 
-        editor.putInt("missionGoal", missionGoal);
-        editor.putInt("missionProgress", missionProgress);
-
         editor.apply();
     }
 
@@ -796,8 +611,17 @@ public class GameActivity extends AppCompatActivity {
         mineLevel = preferences.getInt("mineLevel", 0);
         greenhouseLevel = preferences.getInt("greenhouseLevel", 0);
         oxygenPlantLevel = preferences.getInt("oxygenPlantLevel", 0);
-        missionGoal = preferences.getInt("missionGoal", 100);
-        missionProgress = preferences.getInt("missionProgress", 0);
+        MissionManager.initializeMissions();
+
+        dailyMissions = MissionManager.getDailyMissions();
+
+        storyMissions = MissionManager.getStoryMissions();
+
+        if (!dailyMissions.isEmpty()) {
+
+            currentMission = dailyMissions.get(0);
+
+        }
     }
 
     //====================================================
@@ -845,6 +669,7 @@ public class GameActivity extends AppCompatActivity {
         running = true;
 
         initializeGame();
+        refreshMissionUI();
         startGameLoop();
         startEnergySystem();
         startWorkerSystem();
