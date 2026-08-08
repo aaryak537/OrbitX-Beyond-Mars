@@ -1,237 +1,557 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#0B1020">
 
-    <!-- Header -->
-    <RelativeLayout
-        android:id="@+id/headerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="16dp">
+    <!-- ========================================================= -->
+    <!-- MARS BACKGROUND                                           -->
+    <!-- ========================================================= -->
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:padding="4dp"
-            android:src="@drawable/ic_back"
-            app:tint="#FFFFFF" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="BUILD"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:textSize="26sp"/>
-    </RelativeLayout>
-
-    <ScrollView
+    <ImageView
+        android:id="@+id/imgBuildBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headerLayout">
+        android:scaleType="centerCrop"
+        android:src="@drawable/mars_ground"
+        android:contentDescription="@null" />
 
-        <LinearLayout
+    <!-- Dark overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#880B1020" />
+
+
+    <!-- ========================================================= -->
+    <!-- MAIN CONTENT                                               -->
+    <!-- ========================================================= -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <!-- ===================================================== -->
+        <!-- TOP BAR                                               -->
+        <!-- ===================================================== -->
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="72dp"
+            android:layout_marginBottom="14dp"
+            app:cardBackgroundColor="#DD242936"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp">
 
-            <!-- Solar Panel -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#1A2238"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="12dp">
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    app:tint="#FFC107"
-                    android:src="@drawable/ic_solar"/>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
+                    android:text="BUILD COLONY"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Solar Panel"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+10 Energy/sec"
-                        android:textColor="#AAAAAA"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnBuildSolar"
+                <TextView
+                    android:id="@+id/txtCoins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_mars"
-                    android:backgroundTint="@null"
-                    app:backgroundTint="@null"
-                    android:text="500"/>
+                    android:text="0"
+                    android:textColor="#FFD54F"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="🪙"
+                    android:textSize="22sp" />
+
             </LinearLayout>
 
-            <!-- Oxygen Plant -->
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- ===================================================== -->
+        <!-- BUILDING LIST                                         -->
+        <!-- ===================================================== -->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#1A2238"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    app:tint="#4CAF50"
-                    android:src="@drawable/ic_oxygen"/>
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <!-- ================================================= -->
+                <!-- HQ                                                   -->
+                <!-- ================================================= -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#DD242936"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Oxygen Plant"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+20 Population"
-                        android:textColor="#AAAAAA"/>
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:gravity="center"
+                            android:text="🏠"
+                            android:textSize="38sp" />
 
-                <Button
-                    android:id="@+id/btnBuildOxygen"
-                    android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Colony HQ"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtHQLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Lv. 1"
+                                android:textColor="#FFB74D"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/txtHQCost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cost: 1000 Coins"
+                                android:textColor="#BFC5D2"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Increases colony efficiency"
+                                android:textColor="#8F98A8"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnUpgradeHQ"
+                            android:layout_width="110dp"
+                            android:layout_height="48dp"
+                            android:text="UPGRADE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#FF7A3D" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- ================================================= -->
+                <!-- SOLAR                                                -->
+                <!-- ================================================= -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_mars"
-                    android:backgroundTint="@null"
-                    app:backgroundTint="@null"
-                    android:text="1K"/>
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#DD242936"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:gravity="center"
+                            android:text="☀️"
+                            android:textSize="38sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Solar Array"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtSolarLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Lv. 0"
+                                android:textColor="#5EEBFF"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/txtSolarCost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cost: 300 Coins"
+                                android:textColor="#BFC5D2"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Increases Energy/sec"
+                                android:textColor="#8F98A8"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnUpgradeSolar"
+                            android:layout_width="110dp"
+                            android:layout_height="48dp"
+                            android:text="UPGRADE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#00AFC8" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- ================================================= -->
+                <!-- MINE                                                 -->
+                <!-- ================================================= -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#DD242936"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:gravity="center"
+                            android:text="⛏️"
+                            android:textSize="38sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mineral Mine"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtMineLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Lv. 0"
+                                android:textColor="#FFB74D"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/txtMineCost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cost: 400 Coins"
+                                android:textColor="#BFC5D2"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Increases Minerals/sec"
+                                android:textColor="#8F98A8"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnUpgradeMine"
+                            android:layout_width="110dp"
+                            android:layout_height="48dp"
+                            android:text="UPGRADE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#FF7A3D" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- ================================================= -->
+                <!-- GREENHOUSE                                            -->
+                <!-- ================================================= -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#DD242936"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:gravity="center"
+                            android:text="🌱"
+                            android:textSize="38sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Greenhouse"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtGreenhouseLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Lv. 0"
+                                android:textColor="#66D17A"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/txtGreenhouseCost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cost: 600 Coins"
+                                android:textColor="#BFC5D2"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Adds +1 Worker"
+                                android:textColor="#8F98A8"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnUpgradeGreenhouse"
+                            android:layout_width="110dp"
+                            android:layout_height="48dp"
+                            android:text="UPGRADE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#42A85F" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- ================================================= -->
+                <!-- OXYGEN PLANT                                         -->
+                <!-- ================================================= -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardBackgroundColor="#DD242936"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:padding="6dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/building_oxygen"
+                            android:contentDescription="Oxygen Generator" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Oxygen Generator"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtOxygenLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Lv. 0"
+                                android:textColor="#5EEBFF"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/txtOxygenCost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Cost: 800 Coins"
+                                android:textColor="#BFC5D2"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Improves colony efficiency"
+                                android:textColor="#8F98A8"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnUpgradeOxygen"
+                            android:layout_width="110dp"
+                            android:layout_height="48dp"
+                            android:text="UPGRADE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#008FC4" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
             </LinearLayout>
 
-            <!-- Habitat -->
-            <LinearLayout
+        </ScrollView>
+
+
+        <!-- ===================================================== -->
+        <!-- BOTTOM INFO                                           -->
+        <!-- ===================================================== -->
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="#DD242936"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp">
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#1A2238"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="UPGRADE YOUR COLONY • BUILD THE FUTURE OF MARS"
+                android:textColor="#9FA8B8"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_habitat"/>
+        </androidx.cardview.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
+    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Habitat Dome"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+5 Workers"
-                        android:textColor="#AAAAAA"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnBuildHabitat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_mars"
-                    android:backgroundTint="@null"
-                    app:backgroundTint="@null"
-                    android:text="2K"/>
-            </LinearLayout>
-
-            <!-- Research Lab -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#1A2238"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    app:tint="#7C4DFF"
-                    android:src="@drawable/ic_lab"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Research Lab"
-                        android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Unlock New Technologies"
-                        android:textColor="#AAAAAA"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnBuildLab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_mars"
-                    android:backgroundTint="@null"
-                    app:backgroundTint="@null"
-                    android:text="5K"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</RelativeLayout>
+</FrameLayout>

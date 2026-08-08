@@ -1,90 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
+    android:id="@+id/landingRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#050817">
 
-    <!-- Space Background -->
+    <!-- SPACE BACKGROUND -->
     <ImageView
-        android:id="@+id/bg"
+        android:id="@+id/imgSpace"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_space"
-        android:contentDescription="@string/space_background"/>
+        android:src="@drawable/bg_space" />
 
-    <!-- Stars Overlay -->
-    <ImageView
-        android:id="@+id/stars"
+    <!-- DARK CINEMATIC OVERLAY -->
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"
+        android:background="#35000000" />
+
+    <!-- MARS HORIZON -->
+    <ImageView
+        android:id="@+id/imgMarsGround"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_gravity="bottom"
         android:scaleType="centerCrop"
-        android:src="@drawable/stars_overlay"
-        android:contentDescription="Stars"/>
+        android:src="@drawable/mars_ground" />
 
-    <!-- Landing Glow -->
+    <!-- LANDING PAD -->
     <ImageView
-        android:id="@+id/glow"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="150dp"
-        android:alpha="0"
-        android:src="@drawable/glow_circle"
-        android:contentDescription="Glow"/>
+        android:id="@+id/imgLandingPad"
+        android:layout_width="180dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="105dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/landing_pad"
+        android:alpha="0.95" />
 
-    <!-- Rocket -->
+    <!-- ROCKET -->
     <ImageView
-        android:id="@+id/rocket"
-        android:layout_width="150dp"
-        android:layout_height="250dp"
+        android:id="@+id/imgRocket"
+        android:layout_width="105dp"
+        android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
-        android:translationY="-900dp"
+        android:layout_marginTop="-230dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/rocket"
-        android:contentDescription="@string/rocket"/>
+        android:elevation="10dp" />
 
-    <!-- Dust Cloud -->
+    <!-- ROCKET ENGINE GLOW -->
+    <View
+        android:id="@+id/engineGlow"
+        android:layout_width="38dp"
+        android:layout_height="95dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/engine_glow"
+        android:alpha="0.9" />
+
+    <!-- DUST EFFECT -->
     <ImageView
-        android:id="@+id/dust"
-        android:layout_width="340dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="120dp"
-        android:alpha="0"
+        android:id="@+id/imgDust"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="95dp"
         android:scaleType="fitCenter"
         android:src="@drawable/dust"
-        android:contentDescription="@string/smoke"/>
+        android:alpha="0" />
 
-    <!-- Astronaut -->
+    <!-- ASTRONAUT -->
     <ImageView
-        android:id="@+id/astronaut"
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="150dp"
-        android:alpha="0"
+        android:id="@+id/imgAstronaut"
+        android:layout_width="105dp"
+        android:layout_height="190dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="105dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/astronaut"
-        android:contentDescription="@string/astronaut"/>
+        android:alpha="0" />
 
-    <!-- Mars Surface -->
-    <ImageView
-        android:id="@+id/marsSurface"
+    <!-- TOP CINEMATIC TEXT -->
+    <LinearLayout
+        android:id="@+id/titleContainer"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_gravity="bottom"
-        android:scaleType="fitXY"
-        android:src="@drawable/mars_ground"
-        android:contentDescription="@string/mars"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="55dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:alpha="0">
 
-    <!-- Black Fade Overlay -->
-    <View
-        android:id="@+id/fadeOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000000"
-        android:alpha="0"/>
+        <TextView
+            android:id="@+id/txtMissionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MISSION 01"
+            android:textColor="#FF6B35"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.18" />
+
+        <TextView
+            android:id="@+id/txtLandingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="LANDING ON MARS"
+            android:textColor="#FFFFFF"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.06" />
+
+    </LinearLayout>
+
+    <!-- LANDING STATUS -->
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="38dp"
+        android:text="INITIALIZING LANDING..."
+        android:textColor="#BFEFFF"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.08"
+        android:alpha="0.9" />
+
+
+    <!-- SKIP -->
+    <TextView
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="22dp"
+        android:text="SKIP  ›"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:alpha="0.75"
+        android:padding="10dp" />
 
 </FrameLayout>

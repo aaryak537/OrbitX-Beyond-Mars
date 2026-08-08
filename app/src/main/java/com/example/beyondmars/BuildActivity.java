@@ -1,100 +1,474 @@
 package com.example.beyondmars;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Locale;
+
 public class BuildActivity extends AppCompatActivity {
 
-    private ImageView btnBack;
+    private SharedPreferences preferences;
 
-    private Button btnBuildSolar;
-    private Button btnBuildOxygen;
-    private Button btnBuildHabitat;
-    private Button btnBuildLab;
+    private long coins;
 
-    // Building Costs
-    private static final int SOLAR_COST = 500;
-    private static final int OXYGEN_COST = 1000;
-    private static final int HABITAT_COST = 2000;
-    private static final int LAB_COST = 5000;
+    private int hqLevel;
+    private int solarLevel;
+    private int mineLevel;
+    private int greenhouseLevel;
+    private int oxygenPlantLevel;
 
-    private int coins;
+    private int workers;
+
+    private TextView txtCoins;
+
+    private TextView txtHQLevel;
+    private TextView txtSolarLevel;
+    private TextView txtMineLevel;
+    private TextView txtGreenhouseLevel;
+    private TextView txtOxygenLevel;
+
+    private TextView txtHQCost;
+    private TextView txtSolarCost;
+    private TextView txtMineCost;
+    private TextView txtGreenhouseCost;
+    private TextView txtOxygenCost;
+
+    private Button btnUpgradeHQ;
+    private Button btnUpgradeSolar;
+    private Button btnUpgradeMine;
+    private Button btnUpgradeGreenhouse;
+    private Button btnUpgradeOxygen;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_build);
 
-        btnBack = findViewById(R.id.btnBack);
+        preferences = getSharedPreferences(
+                "BeyondMarsSave",
+                MODE_PRIVATE
+        );
 
-        btnBuildSolar = findViewById(R.id.btnBuildSolar);
-        btnBuildOxygen = findViewById(R.id.btnBuildOxygen);
-        btnBuildHabitat = findViewById(R.id.btnBuildHabitat);
-        btnBuildLab = findViewById(R.id.btnBuildLab);
+        initializeViews();
 
-        // Receive current coins
-        coins = getIntent().getIntExtra("coins", 0);
+        loadGame();
 
-        btnBack.setOnClickListener(v -> finishBuild());
+        updateUI();
 
-        btnBuildSolar.setOnClickListener(v ->
-                buildStructure(SOLAR_COST, "Solar Panel"));
-
-        btnBuildOxygen.setOnClickListener(v ->
-                buildStructure(OXYGEN_COST, "Oxygen Plant"));
-
-        btnBuildHabitat.setOnClickListener(v ->
-                buildStructure(HABITAT_COST, "Habitat Dome"));
-
-        btnBuildLab.setOnClickListener(v ->
-                buildStructure(LAB_COST, "Research Lab"));
+        setupButtons();
     }
 
-    private void buildStructure(int cost, String building) {
 
-        if (coins >= cost) {
+    // =========================================================
+    // VIEWS
+    // =========================================================
 
-            coins -= cost;
+    private void initializeViews() {
 
-            Toast.makeText(
-                    this,
-                    building + " Built Successfully!",
-                    Toast.LENGTH_SHORT
-            ).show();
+        txtCoins =
+                findViewById(R.id.txtCoins);
 
-            // TODO:
-            // Increase Energy
-            // Increase Population
-            // Unlock Technologies
-            // Save Building Progress
-            // Update Main Game
+        txtHQLevel =
+                findViewById(R.id.txtHQLevel);
 
-        } else {
+        txtSolarLevel =
+                findViewById(R.id.txtSolarLevel);
 
-            Toast.makeText(
-                    this,
-                    "Not enough coins!",
-                    Toast.LENGTH_SHORT
-            ).show();
+        txtMineLevel =
+                findViewById(R.id.txtMineLevel);
+
+        txtGreenhouseLevel =
+                findViewById(R.id.txtGreenhouseLevel);
+
+        txtOxygenLevel =
+                findViewById(R.id.txtOxygenLevel);
+
+
+        txtHQCost =
+                findViewById(R.id.txtHQCost);
+
+        txtSolarCost =
+                findViewById(R.id.txtSolarCost);
+
+        txtMineCost =
+                findViewById(R.id.txtMineCost);
+
+        txtGreenhouseCost =
+                findViewById(R.id.txtGreenhouseCost);
+
+        txtOxygenCost =
+                findViewById(R.id.txtOxygenCost);
+
+
+        btnUpgradeHQ =
+                findViewById(R.id.btnUpgradeHQ);
+
+        btnUpgradeSolar =
+                findViewById(R.id.btnUpgradeSolar);
+
+        btnUpgradeMine =
+                findViewById(R.id.btnUpgradeMine);
+
+        btnUpgradeGreenhouse =
+                findViewById(R.id.btnUpgradeGreenhouse);
+
+        btnUpgradeOxygen =
+                findViewById(R.id.btnUpgradeOxygen);
+    }
+
+
+    // =========================================================
+    // LOAD
+    // =========================================================
+
+    private void loadGame() {
+
+        coins =
+                preferences.getLong(
+                        "coins",
+                        0
+                );
+
+        hqLevel =
+                preferences.getInt(
+                        "hqLevel",
+                        1
+                );
+
+        solarLevel =
+                preferences.getInt(
+                        "solarLevel",
+                        0
+                );
+
+        mineLevel =
+                preferences.getInt(
+                        "mineLevel",
+                        0
+                );
+
+        greenhouseLevel =
+                preferences.getInt(
+                        "greenhouseLevel",
+                        0
+                );
+
+        oxygenPlantLevel =
+                preferences.getInt(
+                        "oxygenPlantLevel",
+                        0
+                );
+
+        workers =
+                preferences.getInt(
+                        "workers",
+                        0
+                );
+    }
+
+
+    // =========================================================
+    // BUTTONS
+    // =========================================================
+
+    private void setupButtons() {
+
+        btnUpgradeHQ.setOnClickListener(
+                v -> upgradeHQ()
+        );
+
+        btnUpgradeSolar.setOnClickListener(
+                v -> upgradeSolar()
+        );
+
+        btnUpgradeMine.setOnClickListener(
+                v -> upgradeMine()
+        );
+
+        btnUpgradeGreenhouse.setOnClickListener(
+                v -> upgradeGreenhouse()
+        );
+
+        btnUpgradeOxygen.setOnClickListener(
+                v -> upgradeOxygen()
+        );
+    }
+
+
+    // =========================================================
+    // HQ
+    // =========================================================
+
+    private void upgradeHQ() {
+
+        int cost =
+                (hqLevel + 1) * 500;
+
+        if (!spendCoins(cost))
+            return;
+
+        hqLevel++;
+
+        saveGame();
+
+        showMessage(
+                "🏠 HQ upgraded to Lv." +
+                        hqLevel
+        );
+
+        updateUI();
+    }
+
+
+    // =========================================================
+    // SOLAR
+    // =========================================================
+
+    private void upgradeSolar() {
+
+        int cost =
+                (solarLevel + 1) * 300;
+
+        if (!spendCoins(cost))
+            return;
+
+        solarLevel++;
+
+        saveGame();
+
+        showMessage(
+                "☀️ Solar upgraded to Lv." +
+                        solarLevel
+        );
+
+        updateUI();
+    }
+
+
+    // =========================================================
+    // MINE
+    // =========================================================
+
+    private void upgradeMine() {
+
+        int cost =
+                (mineLevel + 1) * 400;
+
+        if (!spendCoins(cost))
+            return;
+
+        mineLevel++;
+
+        saveGame();
+
+        showMessage(
+                "⛏ Mine upgraded to Lv." +
+                        mineLevel
+        );
+
+        updateUI();
+    }
+
+
+    // =========================================================
+    // GREENHOUSE
+    // =========================================================
+
+    private void upgradeGreenhouse() {
+
+        int cost =
+                (greenhouseLevel + 1) * 600;
+
+        if (!spendCoins(cost))
+            return;
+
+        greenhouseLevel++;
+
+        workers++;
+
+        saveGame();
+
+        showMessage(
+                "🌱 Greenhouse upgraded!\n" +
+                        "+1 Worker"
+        );
+
+        updateUI();
+    }
+
+
+    // =========================================================
+    // OXYGEN
+    // =========================================================
+
+    private void upgradeOxygen() {
+
+        int cost =
+                (oxygenPlantLevel + 1) * 800;
+
+        if (!spendCoins(cost))
+            return;
+
+        oxygenPlantLevel++;
+
+        saveGame();
+
+        showMessage(
+                "🫁 Oxygen Plant upgraded!"
+        );
+
+        updateUI();
+    }
+
+
+    // =========================================================
+    // SPEND COINS
+    // =========================================================
+
+    private boolean spendCoins(int amount) {
+
+        if (coins < amount) {
+
+            showMessage(
+                    "Not enough Coins"
+            );
+
+            return false;
         }
+
+        coins -= amount;
+
+        return true;
     }
 
-    private void finishBuild() {
 
-        Intent result = new Intent();
-        result.putExtra("coins", coins);
+    // =========================================================
+    // SAVE
+    // =========================================================
 
-        setResult(RESULT_OK, result);
-        finish();
+    private void saveGame() {
+
+        preferences.edit()
+
+                .putLong(
+                        "coins",
+                        coins
+                )
+
+                .putInt(
+                        "hqLevel",
+                        hqLevel
+                )
+
+                .putInt(
+                        "solarLevel",
+                        solarLevel
+                )
+
+                .putInt(
+                        "mineLevel",
+                        mineLevel
+                )
+
+                .putInt(
+                        "greenhouseLevel",
+                        greenhouseLevel
+                )
+
+                .putInt(
+                        "oxygenPlantLevel",
+                        oxygenPlantLevel
+                )
+
+                .putInt(
+                        "workers",
+                        workers
+                ).apply();
     }
 
-    @Override
-    public void onBackPressed() {
-        finishBuild();
+
+    // =========================================================
+    // UI
+    // =========================================================
+
+    private void updateUI() {
+
+        txtCoins.setText(
+                String.format(
+                        Locale.getDefault(),
+                        "%,d",
+                        coins
+                )
+        );
+
+
+        txtHQLevel.setText(
+                "Lv. " + hqLevel
+        );
+
+        txtSolarLevel.setText(
+                "Lv. " + solarLevel
+        );
+
+        txtMineLevel.setText(
+                "Lv. " + mineLevel
+        );
+
+        txtGreenhouseLevel.setText(
+                "Lv. " + greenhouseLevel
+        );
+
+        txtOxygenLevel.setText(
+                "Lv. " + oxygenPlantLevel
+        );
+
+
+        txtHQCost.setText(
+                "Cost: " +
+                        ((hqLevel + 1) * 500) +
+                        " Coins"
+        );
+
+        txtSolarCost.setText(
+                "Cost: " +
+                        ((solarLevel + 1) * 300) +
+                        " Coins"
+        );
+
+        txtMineCost.setText(
+                "Cost: " +
+                        ((mineLevel + 1) * 400) +
+                        " Coins"
+        );
+
+        txtGreenhouseCost.setText(
+                "Cost: " +
+                        ((greenhouseLevel + 1) * 600) +
+                        " Coins"
+        );
+
+        txtOxygenCost.setText(
+                "Cost: " +
+                        ((oxygenPlantLevel + 1) * 800) +
+                        " Coins"
+        );
+    }
+
+
+    private void showMessage(String message) {
+
+        Toast.makeText(
+                this,
+                message,
+                Toast.LENGTH_SHORT
+        ).show();
     }
 }

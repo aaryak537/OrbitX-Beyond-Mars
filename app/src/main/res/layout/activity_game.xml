@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <!-- ========================= -->
-    <!-- MARS BACKGROUND -->
-    <!-- ========================= -->
+    <!-- ===================================================== -->
+    <!-- MARS BACKGROUND                                       -->
+    <!-- ===================================================== -->
 
     <ImageView
         android:id="@+id/imgBackground"
@@ -17,12 +17,9 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:contentDescription="@string/mars_background"
-        android:src="@drawable/bg_mars"/>
+        android:src="@drawable/bg_mars" />
 
-    <!-- ========================= -->
-    <!-- STARS -->
-    <!-- ========================= -->
-
+    <!-- Stars / Night overlay -->
     <ImageView
         android:id="@+id/imgStars"
         android:layout_width="match_parent"
@@ -30,82 +27,95 @@
         android:alpha="0"
         android:scaleType="centerCrop"
         android:contentDescription="@string/stars"
-        android:src="@drawable/stars_overlay"/>
+        android:src="@drawable/stars_overlay" />
 
+    <!-- ===================================================== -->
+    <!-- TOP HUD                                                -->
+    <!-- ===================================================== -->
 
     <LinearLayout
         android:id="@+id/topHUD"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/bg_panel"
+        android:elevation="8dp"
         android:weightSum="4">
 
-        <!-- Coins -->
+        <!-- COINS -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:contentDescription="@string/energy_coins"
                 android:src="@drawable/ic_coin"
-                app:tint="#FFFFFF" />
+                app:tint="#FFD54F" />
 
             <TextView
                 android:id="@+id/txtCoins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!-- Minerals -->
+        <!-- MINERALS -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:contentDescription="@string/minerals_gems"
                 android:src="@drawable/ic_gem"
-                app:tint="#9BE564" />
+                app:tint="#FF8A3D" />
 
             <TextView
                 android:id="@+id/txtMinerals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:text="0"
-                android:textColor="#9BE564"
-                android:textSize="18sp"
+                android:textColor="#FFB36B"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
-        <!-- Energy -->
+
+        <!-- ENERGY -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:contentDescription="@string/energy_coins"
                 android:src="@drawable/ic_energy"
                 app:tint="#00FF99" />
@@ -114,25 +124,26 @@
                 android:id="@+id/txtEnergy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:text="0"
                 android:textColor="#00FF99"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!-- Level -->
+        <!-- LEVEL -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:contentDescription="@string/levels"
                 android:src="@drawable/ic_level" />
 
@@ -140,77 +151,93 @@
                 android:id="@+id/txtLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:text="Lv.1"
                 android:textColor="#FFD54F"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imgMountains"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
-        android:contentDescription="@string/mars_background"
-        android:scaleType="fitXY"
-        android:src="@drawable/mars_mountains" />
 
-    <!-- ========================= -->
-    <!-- MISSION PANEL -->
-    <!-- ========================= -->
+    <!-- ===================================================== -->
+    <!-- MISSION PANEL                                          -->
+    <!-- ===================================================== -->
 
     <LinearLayout
         android:id="@+id/missionPanel"
-        android:layout_width="240dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/topHUD"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical"
         android:padding="12dp"
-        android:background="@drawable/bg_panel">
+        android:background="@drawable/bg_panel"
+        android:elevation="6dp"
+        android:clickable="true"
+        android:focusable="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mission"
-            android:textStyle="bold"
             android:textColor="#FFD54F"
-            android:textSize="16sp"/>
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtMission"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Collect 100 Minerals"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:text="Collect Minerals"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <ProgressBar
             android:id="@+id/progressMission"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
             android:max="100"
-            android:progress="15"
-            android:layout_marginTop="8dp"/>
+            android:progress="0" />
 
         <TextView
             android:id="@+id/txtMissionProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15 / 100"
+            android:layout_marginTop="4dp"
+            android:text="0 / 100"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:layout_marginTop="4dp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
+
+
+    <!-- ===================================================== -->
+    <!-- MARS MOUNTAINS                                         -->
+    <!-- ===================================================== -->
+
+    <ImageView
+        android:id="@+id/imgMountains"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="88dp"
+        android:contentDescription="@string/mars_background"
+        android:scaleType="fitXY"
+        android:src="@drawable/mars_mountains" />
+
+
+    <!-- ===================================================== -->
+    <!-- MARS GROUND                                            -->
+    <!-- ===================================================== -->
 
     <ImageView
         android:id="@+id/imgGround"
@@ -218,34 +245,50 @@
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="70dp"
-        android:scaleType="fitXY"
         android:contentDescription="@string/mars_background"
+        android:scaleType="fitXY"
         android:src="@drawable/mars_ground" />
-    <TextView
-        android:id="@+id/txtWorkers"
+
+
+    <!-- ===================================================== -->
+    <!-- WORKER / MINERAL INFO                                  -->
+    <!-- ===================================================== -->
+
+    <LinearLayout
+        android:id="@+id/colonyInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/missionPanel"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/workers"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:id="@+id/txtResources"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtWorkers"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="6dp"
-        android:text="Resources : 0"
-        android:textColor="#FFD54F"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/bg_panel"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/txtWorkers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workers : 0"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtMineralRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="⛏ +0 Minerals/sec"
+            android:textColor="#FFB36B"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
 
     <!-- ===================================================== -->
-    <!-- BUILDINGS LAYER -->
+    <!-- BUILDINGS LAYER                                        -->
     <!-- ===================================================== -->
 
     <FrameLayout
@@ -253,7 +296,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Headquarters -->
+        <!-- HEADQUARTERS -->
 
         <ImageView
             android:id="@+id/imgHQ"
@@ -264,7 +307,7 @@
             android:contentDescription="@string/base"
             android:src="@drawable/base_hq" />
 
-        <!-- Solar Panel -->
+        <!-- SOLAR -->
 
         <ImageView
             android:id="@+id/imgSolar"
@@ -277,7 +320,7 @@
             android:contentDescription="@string/building_solar_panel"
             android:src="@drawable/building_solar" />
 
-        <!-- Mine -->
+        <!-- MINE -->
 
         <ImageView
             android:id="@+id/imgMine"
@@ -290,7 +333,7 @@
             android:contentDescription="@string/building_mine"
             android:src="@drawable/building_mine" />
 
-        <!-- Greenhouse -->
+        <!-- GREENHOUSE -->
 
         <ImageView
             android:id="@+id/imgGreenhouse"
@@ -303,7 +346,7 @@
             android:contentDescription="@string/building_greenhouse"
             android:src="@drawable/building_greenhouse" />
 
-        <!-- Oxygen Plant
+        <!-- OXYGEN PLANT -->
 
         <ImageView
             android:id="@+id/imgOxygen"
@@ -313,26 +356,32 @@
             android:layout_marginEnd="55dp"
             android:layout_marginBottom="140dp"
             android:visibility="gone"
+            android:contentDescription="Oxygen Plant"
             android:src="@drawable/building_oxygen" />
--->
+
     </FrameLayout>
 
+
     <!-- ===================================================== -->
-    <!-- ASTRONAUT -->
+    <!-- ASTRONAUT — MAIN INTERACTION                           -->
     <!-- ===================================================== -->
 
     <ImageView
         android:id="@+id/imgAstronaut"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_above="@id/imgGround"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="true"
+        android:focusable="true"
         android:contentDescription="@string/astronaut"
-        android:src="@drawable/astronaut" />
+        android:src="@drawable/astronaut"
+        android:elevation="12dp" />
+
 
     <!-- ===================================================== -->
-    <!-- FLOATING RESOURCE CONTAINER -->
+    <!-- FLOATING RESOURCE CONTAINER                            -->
     <!-- ===================================================== -->
 
     <FrameLayout
@@ -342,8 +391,9 @@
         android:clickable="false"
         android:focusable="false" />
 
+
     <!-- ===================================================== -->
-    <!-- TAP EFFECT CONTAINER -->
+    <!-- PARTICLE CONTAINER                                     -->
     <!-- ===================================================== -->
 
     <FrameLayout
@@ -353,8 +403,9 @@
         android:clickable="false"
         android:focusable="false" />
 
+
     <!-- ===================================================== -->
-    <!-- CONSTRUCTION PROGRESS PANEL -->
+    <!-- CONSTRUCTION PANEL                                     -->
     <!-- ===================================================== -->
 
     <LinearLayout
@@ -385,12 +436,13 @@
             android:layout_height="8dp"
             android:layout_marginTop="8dp"
             android:max="100"
-            android:progress="40" />
+            android:progress="0" />
 
     </LinearLayout>
 
+
     <!-- ===================================================== -->
-    <!-- RESOURCE GAIN TEXT -->
+    <!-- FLOATING REWARD                                       -->
     <!-- ===================================================== -->
 
     <TextView
@@ -398,14 +450,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="+1 Energy"
+        android:text="+5 Minerals"
         android:textColor="#FFD700"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:elevation="20dp" />
+
 
     <!-- ===================================================== -->
-    <!-- XP GAIN -->
+    <!-- FLOATING XP                                            -->
     <!-- ===================================================== -->
 
     <TextView
@@ -414,14 +468,16 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/txtFloatingReward"
-        android:text="+5 XP"
+        android:text="+1 XP"
         android:textColor="#00E5FF"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:elevation="20dp" />
+
 
     <!-- ===================================================== -->
-    <!-- BOTTOM MENU -->
+    <!-- BOTTOM MENU                                            -->
     <!-- ===================================================== -->
 
     <LinearLayout
@@ -429,18 +485,19 @@
         android:layout_width="match_parent"
         android:layout_height="78dp"
         android:layout_alignParentBottom="true"
-        android:background="#CC111111"
+        android:background="#E6111111"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:weightSum="5">
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:weightSum="5"
+        android:elevation="20dp">
 
         <!-- SHOP -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -450,24 +507,26 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
-                android:scaleType="centerInside"
                 android:contentDescription="@string/shop"
-                app:tint="#03A9F4"
-                android:src="@drawable/ic_shop"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_shop"
+                app:tint="#03A9F4" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/shop"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
+                android:textSize="11sp" />
+
         </LinearLayout>
+
 
         <!-- BUILD -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -477,23 +536,26 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
-                app:tint="#4CAF50"
                 android:contentDescription="@string/build"
-                android:src="@drawable/ic_build"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_build"
+                app:tint="#4CAF50" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/build"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
+                android:textSize="11sp" />
+
         </LinearLayout>
+
 
         <!-- WORKERS -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -502,23 +564,26 @@
                 android:id="@+id/btnWorkers"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@string/workers"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_worker"/>
+                android:contentDescription="@string/workers"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_worker" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/workers"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
+                android:textSize="11sp" />
+
         </LinearLayout>
+
 
         <!-- ROCKET -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -528,23 +593,26 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
-                app:tint="#9C27B0"
                 android:contentDescription="@string/rocket"
-                android:src="@drawable/ic_rocket"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_rocket"
+                app:tint="#9C27B0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rocket"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
+                android:textSize="11sp" />
+
         </LinearLayout>
+
 
         <!-- SETTINGS -->
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -554,47 +622,25 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
-                app:tint="#FFD54F"
                 android:contentDescription="@string/setting"
-                android:src="@drawable/ic_settings"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_settings"
+                app:tint="#FFD54F" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"/>
+                android:textSize="11sp" />
+
         </LinearLayout>
 
     </LinearLayout>
 
-    <!-- ===================================================== -->
-    <!-- BUILDING PLACEHOLDERS -->
-    <!-- ===================================================== -->
-
-    <View
-        android:id="@+id/placeholderLeft"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_above="@id/bottomMenu"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="15dp"
-        android:background="#22FFFFFF"
-        android:visibility="gone"/>
-
-    <View
-        android:id="@+id/placeholderRight"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_above="@id/bottomMenu"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"
-        android:background="#22FFFFFF"
-        android:visibility="gone"/>
 
     <!-- ===================================================== -->
-    <!-- PAUSE OVERLAY -->
+    <!-- PAUSE OVERLAY                                          -->
     <!-- ===================================================== -->
 
     <FrameLayout
@@ -602,7 +648,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:elevation="100dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -611,7 +658,7 @@
             android:text="@string/game_paused"
             android:textColor="#FFFFFF"
             android:textSize="28sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </FrameLayout>
 
